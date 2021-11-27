@@ -5,7 +5,7 @@ import { geniusSongResult } from "../types";
 import extractLyrics from "../utils/extractLyrics";
 
 const lyrics: FastifyPluginCallback = async (fastify): Promise<void> => {
-  fastify.get<{ Params: { id?: string }, Body: { auth?: string } }>(
+  fastify.post<{ Params: { id?: string }, Body: { auth?: string } }>(
     "/lyrics/:id",
     {
         schema: {

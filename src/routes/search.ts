@@ -4,7 +4,7 @@ import config from "../config";
 import { geniusSearchResult } from "../types";
 
 const search: FastifyPluginCallback = async (fastify): Promise<void> => {
-  fastify.get<{ Body: { q?: string, auth?: string } }>(
+  fastify.post<{ Body: { q?: string, auth?: string } }>(
     "/search",
     {
         schema: {
