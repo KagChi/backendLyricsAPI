@@ -32,7 +32,7 @@ export type geniusSearchType = "song";
 export interface geniusSearchLyricsInfoResult {
     full_title: string;
     id: number;
-    song_art_image_thumbnail_url: string;
+    song_art_image_url?: string;
     title: string;
     title_with_featured: string;
     url: string;

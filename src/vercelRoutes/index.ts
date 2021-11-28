@@ -36,7 +36,7 @@ export default async function (instance: FastifyInstance): Promise<void> {
         }
     );
 
-    instance.post<{ Body: { auth?: string }, Querystring: { q?: string } }>(
+    instance.post<{ Body: { auth?: string }; Querystring: { q?: string } }>(
         "/search",
         {
             schema: {
@@ -71,7 +71,7 @@ export default async function (instance: FastifyInstance): Promise<void> {
                         title: x.result.title,
                         url: x.result.url,
                         id: x.result.id,
-                        thumbnail: x.result.song_art_image_thumbnail_url
+                        thumbnail: x.result.song_art_image_url ?? "https://images.genius.com/46745a9c2abdf8c1ce02db009ecfd82f.999x999x1.png"
                     })),
                     status: 200,
                     message: "Lyrics found"
