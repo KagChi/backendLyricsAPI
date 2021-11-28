@@ -1,9 +1,9 @@
-import { fetch } from "undici";
+import fetch from "petitio";
 import cheerio from "cheerio";
 
 export default async function (url: string) {
     try {
-        const fetchResponse = await fetch(url);
+        const fetchResponse = fetch(url);
         const bodyText = await fetchResponse.text();
         const $ = cheerio.load(bodyText);
         let lyrics = $('div[class="lyrics"]').text().trim();
