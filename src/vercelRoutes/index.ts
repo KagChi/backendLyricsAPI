@@ -42,7 +42,7 @@ export default async function (instance: FastifyInstance): Promise<void> {
             schema: {
                 body: {
                     type: "object",
-                    required: ["q", "auth"],
+                    required: ["auth"],
                     properties: {
                         q: {
                             description: "The search query",
