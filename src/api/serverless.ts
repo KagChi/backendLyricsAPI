@@ -1,5 +1,7 @@
 import * as dotenv from "dotenv";
-import vercelRoutes from "../vercelRoutes/index";
+import readdirRecursive from "../utils/readdirRercusive";
+import { join } from "path";
+const routeDir = readdirRecursive(join(__dirname, '..', 'routes'));
 dotenv.config();
 
 // Require the framework
@@ -11,12 +13,13 @@ const app = Fastify({
 });
 
 app.decorate("cache", new Map());
-
-// Register your application as a normal plugin.
-/* eslint @typescript-eslint/no-floating-promises: "off" */
-app.register(vercelRoutes, {
-    prefix: "/"
-});
+for(const file of routeDir) {
+    const routes = require(file);
+    /* eslint @typescript-eslint/no-floating-promises: "off" */
+    app.register(routes, {
+        prefix: "/"
+    });
+}
 
 export default async (req: any, res: any): Promise<void> => {
     await app.ready();

@@ -4,7 +4,7 @@ import config from "../config";
 import { geniusSearchResult } from "../types";
 
 const search: FastifyPluginCallback = async (fastify): Promise<void> => {
-    fastify.post<{ Body: { q?: string; auth?: string } }>(
+    fastify.post<{ Body: { auth?: string }, Querystring: { q?: string } }>(
         "/search",
         {
             schema: {
@@ -25,8 +25,9 @@ const search: FastifyPluginCallback = async (fastify): Promise<void> => {
             }
         },
         async (request, reply) => {
-            const { q, auth } = request.body;
-            if (auth !== config.auth) return reply.code(401).send({ status: 401, message: "Authorization missing " });
+            const { auth } = request.body;
+            const { q } = request.query;
+            if (auth !== config.auth) return reply.code(401).send({ status: 401, message: "Authorization missing" });
             /* eslint @typescript-eslint/restrict-template-expressions: "off" */
             const fetchResponse = fetch(`https://api.genius.com/search?q=${encodeURIComponent(q!)}`).header({ Authorization: `Bearer ${config.geniusToken}` });
             /* eslint @typescript-eslint/no-unnecessary-type-assertion: "off" */
