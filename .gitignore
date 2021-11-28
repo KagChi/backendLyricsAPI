@@ -76,6 +76,5 @@ typings/
 .fusebox/
 
 # Custom Ignore
-config.ts
 dist
 package-lock.json
