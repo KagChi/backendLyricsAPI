@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "@discordjs/collection": "^0.3.2",
     "cheerio": "^1.0.0-rc.10",
     "fastify": "^3.24.0",
     "fastify-autoload": "^3.9.0",
