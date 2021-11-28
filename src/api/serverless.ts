@@ -10,6 +10,8 @@ const app = Fastify({
   logger: false,
 });
 
+app.decorate('cache', new Map());
+    
 // Register your application as a normal plugin.
 app.register(vercelRoutes, {
     prefix: '/'
