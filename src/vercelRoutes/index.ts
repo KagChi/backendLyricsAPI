@@ -9,6 +9,29 @@ export default async function (instance: FastifyInstance, opts: FastifyServerOpt
         reply.raw.write("</backendLyricsAPI>");
         return reply.raw.end();
     })
+    
+    instance.post<{ Body: { auth?: string } }>(
+        "/clearCache", 
+        {
+            schema: {
+                body: {
+                    type: 'object',
+                    required: ['auth'],
+                    properties: {
+                        auth: {
+                            description: 'The secret of this lyrics API instance',
+                            type: 'string',
+                        }
+                    }
+                }
+            }
+        }, async(request, reply) => {
+            const { auth } = request.body;
+            if (auth !== config.auth) return reply.code(401).send({ status: 401, message: "Authorization missing "})
+            instance.cache.clear();
+            reply.code(200).send({ status: 200, message: "Lyrics cache cleared "});
+        }
+    )
 
     instance.post<{ Body: { q?: string, auth?: string } }>(
         "/search",
