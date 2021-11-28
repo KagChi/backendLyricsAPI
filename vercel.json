@@ -2,14 +2,14 @@
     "version": 2,
     "builds": [
         {
-            "src": "/dist/api/serverless.js",
+            "src": "/src/api/serverless.js",
             "use": "@vercel/node"
         }
     ],
     "rewrites": [
         {
             "source": "/(.*)",
-            "destination": "dist/api/serverless.ts"
+            "destination": "/src/api/serverless.ts"
         }
     ]
 }
