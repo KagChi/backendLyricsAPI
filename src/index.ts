@@ -3,28 +3,28 @@ import AutoLoad, { AutoloadPluginOptions } from "fastify-autoload";
 import { join } from "path";
 
 
-declare module 'fastify' {
-	export interface FastifyInstance {
-		cache: Map<unknown, unknown>;
-	}
+declare module "fastify" {
+    export interface FastifyInstance {
+        cache: Map<unknown, unknown>;
+    }
 }
 
 export type AppOptions = {
-	logger: true;
+    logger: true;
 } & Partial<AutoloadPluginOptions>;
 
 const app: FastifyPluginAsync<AppOptions> = async (fastify, opts): Promise<void> => {
-    fastify.decorate('cache', new Map());
+    fastify.decorate("cache", new Map());
     await fastify.register(AutoLoad, {
-		dir: join(__dirname, 'plugins'),
-		options: opts,
-	});
+        dir: join(__dirname, "plugins"),
+        options: opts
+    });
 
-	await fastify.register(AutoLoad, {
-		dir: join(__dirname, 'routes'),
-		options: opts,
-	});
-    fastify.server.keepAliveTimeout = 0
+    await fastify.register(AutoLoad, {
+        dir: join(__dirname, "routes"),
+        options: opts
+    });
+    fastify.server.keepAliveTimeout = 0;
 };
 export { app };
 export default app;

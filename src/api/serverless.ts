@@ -7,17 +7,18 @@ import Fastify from "fastify";
 
 // Instantiate Fastify with some config
 const app = Fastify({
-  logger: false,
+    logger: false
 });
 
-app.decorate('cache', new Map());
-    
+app.decorate("cache", new Map());
+
 // Register your application as a normal plugin.
+/* eslint @typescript-eslint/no-floating-promises: "off" */
 app.register(vercelRoutes, {
-    prefix: '/'
+    prefix: "/"
 });
 
-export default async (req: any, res: any) => {
+export default async (req: any, res: any): Promise<void> => {
     await app.ready();
-    app.server.emit('request', req, res);
-}
+    app.server.emit("request", req, res);
+};

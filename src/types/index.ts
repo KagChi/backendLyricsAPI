@@ -1,29 +1,29 @@
 export interface geniusSearchResult {
     meta: {
-        status: 200 | 404
-    },
+        status: 200 | 404;
+    };
     response: {
         hits: geniusSearchHitsResponse[];
-    }
+    };
 }
 
 export interface geniusSongResult {
     meta: {
-        status: 200 | 404
-    },
+        status: 200 | 404;
+    };
     response: {
-        song: {
+        song?: {
             header_image_thumbnail_url: string;
             id: string;
             full_title: string;
             url: string;
             title: string;
-            
-        }
-    }
+
+        };
+    };
 }
 export interface geniusSearchHitsResponse {
-    highlights: [],
+    highlights: [];
     result: geniusSearchLyricsInfoResult;
 }
 
