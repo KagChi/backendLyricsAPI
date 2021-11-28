@@ -6,8 +6,7 @@
     "fastify-cli": "^2.14.0",
     "fastify-compress": "^3.6.1",
     "fastify-plugin": "^3.0.0",
-    "petitio": "^1.4.0",
-    "undici": "^4.10.3"
+    "petitio": "^1.4.0"
   },
   "devDependencies": {
     "@types/node": "^16.11.10",

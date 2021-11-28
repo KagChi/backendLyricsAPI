@@ -1,5 +1,5 @@
 import type { FastifyPluginCallback } from "fastify";
-import { fetch } from "undici";
+import fetch from "petitio";
 import config from "../config";
 import { geniusSongResult } from "../types";
 import extractLyrics from "../utils/extractLyrics";
@@ -37,7 +37,7 @@ const lyrics: FastifyPluginCallback = async (fastify): Promise<void> => {
         if (auth !== config.auth) return reply.code(401).send({ status: 401, message: "Authorization missing "})
         const lyricsCache = fastify.cache.get(id);
         if (lyricsCache) return lyricsCache;
-        const fetchResponse = await fetch(`https://api.genius.com/songs/${encodeURIComponent(id!)}`, { headers: { 'Authorization': `Bearer ${config.geniusToken}`} });
+        const fetchResponse = fetch(`https://api.genius.com/songs/${encodeURIComponent(id!)}`).header({ 'Authorization': `Bearer ${config.geniusToken}` });
         const lyricsInfo = await fetchResponse.json() as geniusSongResult;
         if(!lyricsInfo.response?.song) return reply.code(404).send({ message: "Lyrics not found", status: 404 });
         const lyrics = await extractLyrics(lyricsInfo.response.song.url);

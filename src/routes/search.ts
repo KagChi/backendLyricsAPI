@@ -1,5 +1,5 @@
 import type { FastifyPluginCallback } from "fastify";
-import { fetch } from "undici";
+import fetch from "petitio";
 import config from "../config";
 import { geniusSearchResult } from "../types";
 
@@ -27,7 +27,7 @@ const search: FastifyPluginCallback = async (fastify): Promise<void> => {
     async (request, reply) => {
         const { q, auth } = request.body;
         if (auth !== config.auth) return reply.code(401).send({ status: 401, message: "Authorization missing "})
-        const fetchResponse = await fetch(`https://api.genius.com/search?q=${encodeURIComponent(q!)}`, { headers: { 'Authorization': `Bearer ${config.geniusToken}`} });
+        const fetchResponse = fetch(`https://api.genius.com/search?q=${encodeURIComponent(q!)}`).header({ 'Authorization': `Bearer ${config.geniusToken}` });
         const lyricsInfo = await fetchResponse.json() as geniusSearchResult;
         if(!lyricsInfo.response.hits.length) return reply.code(404).send({ message: "Lyrics not found", status: 404 });
         return reply.code(200).send(

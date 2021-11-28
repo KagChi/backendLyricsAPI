@@ -2,7 +2,7 @@ import { FastifyInstance, FastifyReply, FastifyRequest, FastifyServerOptions } f
 import config from '../config';
 import { geniusSearchResult, geniusSongResult } from '../types';
 import extractLyrics from '../utils/extractLyrics';
-import * as undici from 'undici';
+import fetch from 'petitio';
 export default async function (instance: FastifyInstance, opts: FastifyServerOptions, done: any) {
     instance.get('/', async (req: FastifyRequest, reply: FastifyReply) => {
         reply.raw.writeHead(200, { "Content-Type": "text/plain" });
@@ -33,7 +33,7 @@ export default async function (instance: FastifyInstance, opts: FastifyServerOpt
         async (request, reply) => {
             const { q, auth } = request.body;
             if (auth !== config.auth) return reply.code(401).send({ status: 401, message: "Authorization missing "})
-            const fetchResponse = await undici.fetch(`https://api.genius.com/search?q=${encodeURIComponent(q!)}`, { headers: { 'Authorization': `Bearer ${config.geniusToken}`} });
+            const fetchResponse = fetch(`https://api.genius.com/search?q=${encodeURIComponent(q!)}`).header({ 'Authorization': `Bearer ${config.geniusToken}` });
             const lyricsInfo = await fetchResponse.json() as geniusSearchResult;
             if(!lyricsInfo.response.hits.length) return reply.code(404).send({ message: "Lyrics not found", status: 404 });
             return reply.code(200).send(
@@ -86,7 +86,7 @@ export default async function (instance: FastifyInstance, opts: FastifyServerOpt
             if (auth !== config.auth) return reply.code(401).send({ status: 401, message: "Authorization missing "})
             const lyricsCache = instance.cache.get(id);
             if (lyricsCache) return lyricsCache;
-            const fetchResponse = await undici.fetch(`https://api.genius.com/songs/${encodeURIComponent(id!)}`, { headers: { 'Authorization': `Bearer ${config.geniusToken}`} });
+            const fetchResponse = fetch(`https://api.genius.com/songs/${encodeURIComponent(id!)}`).header({ 'Authorization': `Bearer ${config.geniusToken}` });
             const lyricsInfo = await fetchResponse.json() as geniusSongResult;
             if(!lyricsInfo.response?.song) return reply.code(404).send({ message: "Lyrics not found", status: 404 });
             const lyrics = await extractLyrics(lyricsInfo.response.song.url);
