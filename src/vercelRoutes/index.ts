@@ -2,7 +2,7 @@ import { FastifyInstance, FastifyReply, FastifyRequest, FastifyServerOptions } f
 import config from '../config';
 import { geniusSearchResult, geniusSongResult } from '../types';
 import extractLyrics from '../utils/extractLyrics';
-
+import { fetch } from 'undici';
 export default async function (instance: FastifyInstance, opts: FastifyServerOptions, done: any) {
     instance.get('/', async (req: FastifyRequest, reply: FastifyReply) => {
         reply.raw.writeHead(200, { "Content-Type": "text/plain" });
